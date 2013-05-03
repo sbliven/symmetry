@@ -138,7 +138,8 @@ public class ScanSCOPForSymmetry implements Runnable {
 				if ( name.equals("ds046__"))
 					continue;
 
-				ScopSymmetryCalculation calc = new ScopSymmetryCalculation();
+				//ScopSymmetryCalculation calc = new ScopSymmetryCalculation();
+				SymmetryCalculation calc = new SymmetryCalculation();
 				calc.setDomain(first);
 				calc.setCache(cache);
 				calc.setScopDescription(superfamily);
