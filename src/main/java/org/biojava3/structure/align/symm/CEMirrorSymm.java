@@ -12,8 +12,6 @@ import org.biojava.bio.structure.Group;
 import org.biojava.bio.structure.StructureException;
 import org.biojava.bio.structure.StructureTools;
 import org.biojava.bio.structure.align.ce.CeParameters;
-import org.biojava.bio.structure.align.gui.StructureAlignmentDisplay;
-import org.biojava.bio.structure.align.gui.jmol.StructureAlignmentJmol;
 import org.biojava.bio.structure.align.model.AFPChain;
 import org.biojava.bio.structure.align.util.AtomCache;
 import org.biojava.bio.structure.align.util.RotationAxis;
@@ -280,9 +278,10 @@ public class CEMirrorSymm extends CeSymm {
 			afpChain.setName1(name);
 			afpChain.setName2(name+(mirrorSeq?" reversed":"")+(mirrorCoords?" mirrored":""));
 			
-			StructureAlignmentJmol jmol = StructureAlignmentDisplay.display(afpChain, ca1, ca2);
-			RotationAxis axis = new RotationAxis(afpChain);
-			jmol.evalString(axis.getJmolScript(ca1));
+			// Requires the biojava-structure-gui package
+			//StructureAlignmentJmol jmol = StructureAlignmentDisplay.display(afpChain, ca1, ca2);
+			//RotationAxis axis = new RotationAxis(afpChain);
+			//jmol.evalString(axis.getJmolScript(ca1));
 
 		} catch (StructureException e) {
 			e.printStackTrace();

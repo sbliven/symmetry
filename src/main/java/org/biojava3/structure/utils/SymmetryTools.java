@@ -1,8 +1,6 @@
 package org.biojava3.structure.utils;
 
 
-import javax.swing.JFrame;
-
 import org.biojava.bio.structure.Atom;
 import org.biojava.bio.structure.Group;
 import org.biojava.bio.structure.StructureException;
@@ -10,7 +8,6 @@ import org.biojava.bio.structure.StructureTools;
 import org.biojava.bio.structure.align.ce.CECalculator;
 import org.biojava.bio.structure.align.helper.AlignTools;
 import org.biojava.bio.structure.align.model.AFPChain;
-import org.biojava.bio.structure.gui.ScaleableMatrixPanel;
 import org.biojava.bio.structure.jama.Matrix;
 
 
@@ -20,6 +17,7 @@ public class SymmetryTools {
 	private SymmetryTools(){}
 
 	public static void showMatrix(Matrix m, String string) {
+		/* Requires the biojava-structure-gui package
 		ScaleableMatrixPanel smp = new ScaleableMatrixPanel();
 		JFrame frame = new JFrame();
 
@@ -31,7 +29,7 @@ public class SymmetryTools {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
-
+		*/
 	}
 
 	/**

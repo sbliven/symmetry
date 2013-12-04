@@ -1,7 +1,6 @@
 package demo;
 import org.biojava.bio.structure.Atom;
 import org.biojava.bio.structure.align.ce.CeParameters;
-import org.biojava.bio.structure.align.gui.StructureAlignmentDisplay;
 import org.biojava.bio.structure.align.model.AFPChain;
 import org.biojava.bio.structure.align.model.AfpChainWriter;
 import org.biojava.bio.structure.align.util.AtomCache;
@@ -53,7 +52,8 @@ public class DemoCeSymmSeqConserv {
 
 			System.out.println(AfpChainWriter.toDBSearchResult(afpChain));
 
-			StructureAlignmentDisplay.display(afpChain, ca1, ca2);
+			// Requires the biojava-structure-gui package
+			//StructureAlignmentDisplay.display(afpChain, ca1, ca2);
 
 		} catch (Exception e){
 			e.printStackTrace();

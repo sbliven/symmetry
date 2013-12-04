@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.biojava</groupId>
 	<artifactId>symmetry</artifactId>
 	<version>0.3.4-SNAPSHOT</version>
 	<name>RCSB Symmetry</name>
-	
+
 	<properties>
 		<jdk.version>1.6</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -12,7 +13,7 @@
 		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
 	</properties>
-	
+
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
@@ -24,15 +25,15 @@
 			<name>Java.net Maven 1 Repository (legacy)</name>
 			<url>http://download.java.net/maven/1</url>
 		</repository>
-		
-			
-		<!--  for vecmath... -->
+
+
+		<!-- for vecmath... -->
 		<repository>
-            <id>geotoolkit</id>
-            <name>geotoolkit Repository</name>
-            <url>http://maven.geotoolkit.org/</url>
-        </repository>
-		
+			<id>geotoolkit</id>
+			<name>geotoolkit Repository</name>
+			<url>http://maven.geotoolkit.org/</url>
+		</repository>
+
 		<repository>
 			<id>biojava-maven-repo</id>
 			<name>BioJava repository</name>
@@ -55,9 +56,9 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-	        
+
 	</repositories>
-	
+
 	<scm>
 		<developerConnection>https://github.com/rcsb/symmetry</developerConnection>
 		<connection>git://github.com/rcsb/symmetry.git</connection>
@@ -68,36 +69,29 @@
 		<system>Github</system>
 	</issueManagement>
 
-	  	<!-- where Maven deploy will deploy project jars/wars -->
+	<!-- where Maven deploy will deploy project jars/wars -->
 	<distributionManagement>
 		<downloadUrl>http://nexus.rcsb.org/nexus/content/repositories/releases/</downloadUrl>
-		<repository>			
+		<repository>
 			<id>releases</id>
-			<name>RCSB PDB Maven Repository</name>			
+			<name>RCSB PDB Maven Repository</name>
 			<url>http://nexus.rcsb.org/nexus/content/repositories/releases</url>
 
 		</repository>
-		 <snapshotRepository>
-    		<id>snapshots</id>
-    		<url>http://nexus.rcsb.org/nexus/content/repositories/snapshots</url>
-    		<uniqueVersion>false</uniqueVersion>
-  		</snapshotRepository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://nexus.rcsb.org/nexus/content/repositories/snapshots</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
 	</distributionManagement>
-	
-	
+
+
 	<dependencies>
 
 		<dependency>
 			<groupId>org.biojava</groupId>
 			<artifactId>biojava3-structure</artifactId>
 			<version>3.0.8-SNAPSHOT</version>
-			
-		</dependency>
-		<dependency>
-			<groupId>org.biojava</groupId>
-			<artifactId>biojava3-structure-gui</artifactId>
-			<version>3.0.8-SNAPSHOT</version>
-			
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -113,25 +107,25 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>
 				<configuration>
-				<fork>true</fork>
-						<source>${jdk.version}</source>
+					<fork>true</fork>
+					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<maxmem>2000m</maxmem>
 				</configuration>
 			</plugin>
-					
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
-			
+
 			<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.14.1</version>
-					<configuration>
-						<argLine>-Xms256m -Xmx2000M</argLine>
-					</configuration>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.14.1</version>
+				<configuration>
+					<argLine>-Xms256m -Xmx2000M</argLine>
+				</configuration>
 			</plugin>
 
 		</plugins>
@@ -147,14 +141,12 @@
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 				<includes>
-					<!-- <include>**/*.cif.gz</include>
-					<include>**/*.pdb</include>
-					<include>**/*.mat</include> -->
+					<!-- <include>**/*.cif.gz</include> <include>**/*.pdb</include> <include>**/*.mat</include> -->
 				</includes>
 			</resource>
 		</resources>
-		
-		
+
+
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
@@ -162,7 +154,7 @@
 				<version>2.3</version>
 			</extension>
 		</extensions>
-		
+
 	</build>
 	<url>https://github.com/rcsb/symmetry</url>
 	<description>Detect, analyze, and visualize protein symmetry

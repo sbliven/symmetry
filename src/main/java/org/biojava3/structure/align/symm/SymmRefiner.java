@@ -16,14 +16,10 @@ import java.util.TreeSet;
 import org.biojava.bio.structure.Atom;
 import org.biojava.bio.structure.ResidueNumber;
 import org.biojava.bio.structure.StructureException;
-import org.biojava.bio.structure.StructureTools;
 import org.biojava.bio.structure.align.StructureAlignmentFactory;
-import org.biojava.bio.structure.align.gui.StructureAlignmentDisplay;
-import org.biojava.bio.structure.align.gui.jmol.StructureAlignmentJmol;
 import org.biojava.bio.structure.align.model.AFPChain;
 import org.biojava.bio.structure.align.util.AlignmentTools;
 import org.biojava.bio.structure.align.util.AtomCache;
-import org.biojava.bio.structure.align.util.RotationAxis;
 
 /**
  * A utility class for refining symmetric alignments
@@ -463,6 +459,7 @@ public class SymmRefiner {
 			System.out.println("New rmsd:"+refinedAFP.getTotalRmsdOpt());
 
 			if(displayStruct) {
+				/* Requires the biojava-structure-gui package
 				StructureAlignmentJmol unrefined = StructureAlignmentDisplay.display(afpChain, ca1, StructureTools.cloneCAArray(ca2));
 				RotationAxis unrefinedAxis = new RotationAxis(afpChain);
 				unrefined.evalString(unrefinedAxis.getJmolScript(ca1));
@@ -470,6 +467,7 @@ public class SymmRefiner {
 				StructureAlignmentJmol refined = StructureAlignmentDisplay.display(refinedAFP, ca1, StructureTools.cloneCAArray(ca2));
 				RotationAxis refinedAxis = new RotationAxis(refinedAFP);
 				refined.evalString(refinedAxis.getJmolScript(ca1));
+				*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

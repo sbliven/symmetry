@@ -3,8 +3,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.biojava.bio.structure.Atom;
-import org.biojava.bio.structure.Calc;
-import org.biojava.bio.structure.ResidueNumber;
 import org.biojava.bio.structure.StructureException;
 import org.biojava.bio.structure.StructureTools;
 import org.biojava.bio.structure.align.AbstractStructureAlignment;
@@ -14,14 +12,11 @@ import org.biojava.bio.structure.align.ce.CeCPMain;
 import org.biojava.bio.structure.align.ce.CeParameters;
 import org.biojava.bio.structure.align.ce.ConfigStrucAligParams;
 import org.biojava.bio.structure.align.ce.MatrixListener;
-import org.biojava.bio.structure.align.gui.StructureAlignmentDisplay;
-import org.biojava.bio.structure.align.gui.jmol.StructureAlignmentJmol;
 import org.biojava.bio.structure.align.model.AFPChain;
 import org.biojava.bio.structure.align.util.AFPChainScorer;
 import org.biojava.bio.structure.align.util.AlignmentTools;
 import org.biojava.bio.structure.align.util.AtomCache;
 import org.biojava.bio.structure.jama.Matrix;
-import org.biojava3.structure.align.symm.order.OrderDetectionFailedException;
 import org.biojava3.structure.align.symm.order.OrderDetector;
 import org.biojava3.structure.align.symm.order.SequenceFunctionOrderDetector;
 import org.biojava3.structure.utils.SymmetryTools;
@@ -229,6 +224,7 @@ public class CeSymm extends AbstractStructureAlignment implements MatrixListener
 	}
 
 	private void showCurrentAlig(AFPChain myAFP, Atom[] ca12, Atom[] ca22) throws StructureException {
+		/* Requires the biojava-structure-gui package
 		AFPChain c = (AFPChain) myAFP.clone();
 		StructureAlignmentJmol jmol =  StructureAlignmentDisplay.display(c, ca1, ca2);
 
@@ -250,7 +246,7 @@ public class CeSymm extends AbstractStructureAlignment implements MatrixListener
 				res1.getSeqNum()+":" + chainId1+".CA/1) ; draw l2 line 100 "+cs2+" ("+
 				res2.getSeqNum()+":" + chainId2+".CA/2);" );
 
-
+		*/
 	}
 
 
