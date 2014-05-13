@@ -61,9 +61,14 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 /**
- * A singleton handler for testing resources, particularly alignment results but also other files. For every file, it's nice way to avoid hardcoding the resource path. Loads an alignment result if
- * they're available; otherwise, performs the alignment, saves it, and then loads it. When using ResourceList, avoid using hardcoded paths, and use {@link #getCache()} when an AtomCache is needed.
- * Uses {@link BerkeleyScopInstallation}, and as a <em>side effect calls {@link ScopFactory#setScopDatabase(org.biojava.bio.structure.scop.ScopDatabase)}</em>.
+ * A singleton handler for testing resources, particularly alignment results but
+ * also other files. For every file, it's nice way to avoid hardcoding the
+ * resource path. Loads an alignment result if they're available; otherwise,
+ * performs the alignment, saves it, and then loads it. When using ResourceList,
+ * avoid using hardcoded paths, and use {@link #getCache()} when an AtomCache is
+ * needed. Uses {@link BerkeleyScopInstallation}, and as a
+ * <em>side effect calls
+ * {@link ScopFactory#setScopDatabase(org.biojava.bio.structure.scop.ScopDatabase)}</em>.
  * 
  * @author dmyerstu
  */
@@ -114,18 +119,47 @@ public class ResourceList {
 	public static abstract class NameProvider {
 
 		/**
+		 * Creates a temporary directory with a name like <prefix>-<time>-<num>
+		 * @param prefix
+		 * @return
+		 * @throws IOException if the directory cannot be created
+		 * @throws IllegalStateException if no suitable name can be found
+		 */
+		public static File createTempDirectory(String prefix) {
+			final int maxAttempts = 1000;
+
+			File baseDir = new File(System.getProperty("java.io.tmpdir"));
+			String baseName = "";
+			if( prefix != null && !prefix.isEmpty() ) {
+				baseName = prefix + '-';
+			}
+			baseName += System.currentTimeMillis() + "-";
+
+			for (int counter = 0; counter < maxAttempts; counter++) {
+				File tempDir = new File(baseDir, baseName + counter);
+				if (tempDir.mkdir()) {
+					return tempDir;
+				}
+			}
+			throw new IllegalStateException("Failed to create directory within "
+					+ maxAttempts + " attempts (tried through "
+					+ baseName + (maxAttempts - 1) + ')');
+		}
+		/**
 		 * @return A simple NameProvider using {@link NameProvider#DEFAULT_PDB_DIR} and the format {@code algorithm/nameA,nameB.xml} for alignments.
 		 */
 		public static NameProvider defaultNameProvider() {
+			final File tempDir = createTempDirectory(null);
 			return new NameProvider() {
 				@Override
 				public String getNameForAlignment(String algorithmName, String nameA, String nameB) {
-					return DEFAULT_DIR + algorithmName + "/" + nameA + "," + nameB + ".xml";
+					File xmlFile = new File(new File(tempDir,algorithmName), nameA + "," + nameB + ".xml");
+					return xmlFile.toString();
 				}
 
 				@Override
 				public String getResourceDir() {
-					return DEFAULT_DIR;
+					return tempDir.toString();
 				}
 			};
 		}
@@ -175,13 +209,6 @@ public class ResourceList {
 			return name2;
 		}
 	}
-
-	public static final String DEFAULT_DIR = "src/test/resources/";
-
-	/**
-	 * Null means use the AtomCache default.
-	 */
-	public static final String DEFAULT_PDB_DIR = null;
 
 	private static ResourceList singleton;
 
