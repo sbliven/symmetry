@@ -21,7 +21,8 @@
  *
  */
 
-package org.biojava3.structure.align.symm.protodomain;
+package org.biojava3.test.framework;
+
 
 /**
  * A failure to load a testing resource in {@link ResourceList}.

@@ -40,8 +40,8 @@ import org.biojava3.structure.align.symm.census3.run.Census.AlgorithmGiver;
 import org.biojava3.structure.align.symm.census3.run.CensusJob;
 import org.biojava3.structure.align.symm.protodomain.Protodomain;
 import org.biojava3.structure.align.symm.CeSymm;
-import org.biojava3.structure.align.symm.protodomain.ResourceList;
-import org.biojava3.structure.align.symm.protodomain.ResourceList.NameProvider;
+import org.biojava3.test.framework.ResourceList;
+import org.biojava3.test.framework.ResourceList.NameProvider;
 import org.junit.Before;
 import org.junit.Test;
 

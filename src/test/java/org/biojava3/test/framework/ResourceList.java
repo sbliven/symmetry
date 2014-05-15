@@ -21,7 +21,7 @@
  *
  */
 
-package org.biojava3.structure.align.symm.protodomain;
+package org.biojava3.test.framework;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -51,6 +51,7 @@ import org.biojava.bio.structure.scop.BerkeleyScopInstallation;
 import org.biojava.bio.structure.scop.ScopDatabase;
 import org.biojava.bio.structure.scop.ScopFactory;
 import org.biojava3.structure.align.symm.CeSymm;
+import org.biojava3.structure.align.symm.protodomain.AFPChainAndAtoms;
 import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.Difference;

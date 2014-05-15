@@ -21,7 +21,7 @@
  *
  */
 
-package org.biojava3.structure.align.symm.protodomain;
+package org.biojava3.test.framework;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +30,8 @@ import org.biojava.bio.structure.align.StructureAlignment;
 import org.biojava.bio.structure.align.ce.CeCPMain;
 import org.biojava.bio.structure.align.ce.CeMain;
 import org.biojava3.structure.align.symm.CeSymm;
-import org.biojava3.structure.align.symm.protodomain.ResourceList.NameProvider;
+import org.biojava3.structure.align.symm.protodomain.AFPChainAndAtoms;
+import org.biojava3.test.framework.ResourceList.NameProvider;
 import org.junit.Test;
 
 /**

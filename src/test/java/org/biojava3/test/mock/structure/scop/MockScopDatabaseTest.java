@@ -20,7 +20,7 @@
  * Created on 2013-03-22
  *
  */
-package org.biojava3.structure;
+package org.biojava3.test.mock.structure.scop;
 
 import static org.junit.Assert.*;
 

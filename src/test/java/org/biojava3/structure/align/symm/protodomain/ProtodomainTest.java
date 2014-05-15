@@ -30,7 +30,8 @@ import java.io.IOException;
 import org.biojava.bio.structure.Structure;
 import org.biojava.bio.structure.StructureException;
 import org.biojava.bio.structure.align.util.AtomCache;
-import org.biojava3.structure.align.symm.protodomain.ResourceList.NameProvider;
+import org.biojava3.test.framework.ResourceList;
+import org.biojava3.test.framework.ResourceList.NameProvider;
 import org.junit.Before;
 import org.junit.Test;
 
