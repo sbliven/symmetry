@@ -121,24 +121,6 @@ public class ResourceList {
 		public abstract String getResourceDir();
 	}
 
-	class AlignmentPair {
-		private final String name1;
-		private final String name2;
-
-		public AlignmentPair(String name1, String name2) {
-			this.name1 = name1;
-			this.name2 = name2;
-		}
-
-		public String getName1() {
-			return name1;
-		}
-
-		public String getName2() {
-			return name2;
-		}
-	}
-
 	public static final String DEFAULT_DIR = "src/test/resources/";
 
 	/**
@@ -289,35 +271,21 @@ public class ResourceList {
 	/**
 	 * Loads the alignment requested, performing it iff necessary.
 	 */
-	public AFPChainAndAtoms load(String algName, AlignmentPair names) {
-		try {
-			return load(StructureAlignmentFactory.getAlgorithm(algName), names);
-		} catch (Exception e) {
-			throw new ResourceException("Did not find the algorithm.", e);
-		}
-	}
-
-	/**
-	 * Loads the alignment requested, performing it iff necessary.
-	 */
-	public AFPChainAndAtoms load(StructureAlignment alg, AlignmentPair names) {
+	public AFPChainAndAtoms load(StructureAlignment alg, String nameA, String nameB) {
 		AFPChainAndAtoms acaa;
-		if (!nameProvider.alignmentExists(alg.getAlgorithmName(), names.getName1(), names.getName2())) {
+		if (!nameProvider.alignmentExists(alg.getAlgorithmName(), nameA, nameB)) {
 			lock.writeLock().lock();
-			acaa = put(alg, names.getName1(), names.getName2());
+			acaa = put(alg, nameA, nameB);
 			lock.writeLock().unlock();
 		} else {
 			lock.readLock().lock();
-			acaa = load(nameProvider.getAlignmentFile(alg.getAlgorithmName(), names.getName1(), names.getName2()),
-					names.getName1(), names.getName2());
+			acaa = load(nameProvider.getAlignmentFile(alg.getAlgorithmName(), nameA, nameB),
+					nameA, nameB);
 			lock.readLock().unlock();
 		}
 		return acaa;
 	}
 
-	public AFPChainAndAtoms load(StructureAlignment alg, String nameA, String nameB) {
-		return load(alg, new AlignmentPair(nameA, nameB));
-	}
 
 	/**
 	 * Loads the alignment with {@link CeMain} requested, performing it iff necessary.
