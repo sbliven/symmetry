@@ -20,7 +20,7 @@
  * Created on 2013-03-22
  *
  */
-package org.biojava3.structure.align.symm.census2;
+package org.biojava3.test.mock.structure.align.symm.census2;
 
 import org.biojava.bio.structure.align.model.AFPChain;
 import org.biojava3.structure.align.symm.census2.Result;
