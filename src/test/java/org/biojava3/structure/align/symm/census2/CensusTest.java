@@ -5,17 +5,15 @@ import static org.junit.Assume.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import org.biojava.bio.structure.StructureException;
 import org.biojava.bio.structure.scop.ScopDatabase;
-import org.biojava.bio.structure.scop.ScopDomain;
 import org.biojava.bio.structure.scop.ScopFactory;
 import org.biojava3.test.framework.ResourceList;
 import org.biojava3.test.framework.ResourceList.ElementTextIgnoringDifferenceListener;
 import org.biojava3.test.framework.ResourceList.NameProvider;
+import org.biojava3.test.mock.structure.align.symm.census2.TinyCensus;
 import org.custommonkey.xmlunit.DifferenceListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,32 +24,6 @@ import org.junit.Test;
  */
 @SuppressWarnings("deprecation")
 public class CensusTest {
-
-	class TinyCensus extends Census {
-
-		private String[] domains;
-		
-		public TinyCensus(String... domains) {
-			super();
-			this.domains = domains;
-		}
-
-		@Override
-		protected Significance getSignificance() {
-			return SignificanceFactory.tmScore(0.0);
-		}
-		
-		@Override
-		protected List<ScopDomain> getDomains() {
-			List<ScopDomain> domains = new ArrayList<ScopDomain>();
-			ScopDatabase scop = ScopFactory.getSCOP(ScopFactory.VERSION_1_75B);
-			for (String domain : this.domains) {
-				domains.add(scop.getDomainByScopID(domain));
-			}
-			return domains;
-		}
-
-	}
 
 	@Before
 	public void setUp() throws StructureException {
