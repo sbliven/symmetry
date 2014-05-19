@@ -14,6 +14,7 @@ import org.biojava3.structure.align.symm.census3.run.Census;
 import org.biojava3.test.framework.ElementTextIgnoringDifferenceListener;
 import org.biojava3.test.framework.ResourceList;
 import org.biojava3.test.framework.ResourceList.NameProvider;
+import org.biojava3.test.framework.XMLComparisonHelper;
 import org.biojava3.test.mock.structure.align.symm.census3.TinyCensus;
 import org.custommonkey.xmlunit.DifferenceListener;
 import org.junit.Before;
@@ -124,7 +125,7 @@ public class CensusTest {
 		// unfortunately, the timestamp will be different
 		DifferenceListener listener = new ElementTextIgnoringDifferenceListener("startingTime", "meanSecondsTaken");
 		File expectedFile = ResourceList.get().openFile("census3/expected2.xml");
-		boolean similar = ResourceList.compareXml(expectedFile, actualFile, listener);
+		boolean similar = XMLComparisonHelper.compareXml(expectedFile, actualFile, listener);
 		assertTrue(similar);
 	}
 }

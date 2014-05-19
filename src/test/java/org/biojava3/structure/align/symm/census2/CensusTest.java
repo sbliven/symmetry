@@ -13,6 +13,7 @@ import org.biojava.bio.structure.scop.ScopFactory;
 import org.biojava3.test.framework.ElementTextIgnoringDifferenceListener;
 import org.biojava3.test.framework.ResourceList;
 import org.biojava3.test.framework.ResourceList.NameProvider;
+import org.biojava3.test.framework.XMLComparisonHelper;
 import org.biojava3.test.mock.structure.align.symm.census2.TinyCensus;
 import org.custommonkey.xmlunit.DifferenceListener;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class CensusTest {
 		// unfortunately, the timestamp will be different
 		DifferenceListener listener = new ElementTextIgnoringDifferenceListener("timestamp", "meanSecondsTaken");
 		File expectedFile = ResourceList.get().openFile("census2/expected1_with_map.xml");
-		boolean similar = ResourceList.compareXml(expectedFile, actualFile, listener);
+		boolean similar = XMLComparisonHelper.compareXml(expectedFile, actualFile, listener);
 		assertTrue(similar);
 	}
 	
@@ -65,7 +66,7 @@ public class CensusTest {
 		// unfortunately, the timestamp will be different
 		DifferenceListener listener = new ElementTextIgnoringDifferenceListener("timestamp", "meanSecondsTaken");
 		File expectedFile = ResourceList.get().openFile("census2/expected1.xml");
-		boolean similar = ResourceList.compareXml(expectedFile, actualFile, listener);
+		boolean similar = XMLComparisonHelper.compareXml(expectedFile, actualFile, listener);
 		assertTrue(similar);
 	}
 
@@ -123,7 +124,7 @@ public class CensusTest {
 		// unfortunately, the timestamp will be different
 		DifferenceListener listener = new ElementTextIgnoringDifferenceListener("timestamp", "meanSecondsTaken");
 		File expectedFile = ResourceList.get().openFile("census2/expected2.xml");
-		boolean similar = ResourceList.compareXml(expectedFile, actualFile, listener);
+		boolean similar = XMLComparisonHelper.compareXml(expectedFile, actualFile, listener);
 		assertTrue(similar);
 	}
 }
