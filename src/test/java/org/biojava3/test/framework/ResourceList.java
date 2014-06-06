@@ -58,7 +58,9 @@ import org.custommonkey.xmlunit.XMLUnit;
  * Uses {@link BerkeleyScopInstallation}, and as a <em>side effect calls {@link ScopFactory#setScopDatabase(org.biojava.bio.structure.scop.ScopDatabase)}</em>.
  * 
  * @author dmyerstu
+ * @deprecated Use OutputTester instead
  */
+@Deprecated
 public class ResourceList {
 
 	/**
