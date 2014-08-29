@@ -8,9 +8,9 @@ import org.biojava.bio.structure.StructureException;
 import org.biojava.bio.structure.StructureTools;
 import org.biojava.bio.structure.align.AbstractStructureAlignment;
 import org.biojava.bio.structure.align.StructureAlignment;
+import org.biojava.bio.structure.align.ce.CECPParameters;
 import org.biojava.bio.structure.align.ce.CECalculator;
 import org.biojava.bio.structure.align.ce.CeCPMain;
-import org.biojava.bio.structure.align.ce.CeParameters;
 import org.biojava.bio.structure.align.ce.ConfigStrucAligParams;
 import org.biojava.bio.structure.align.ce.MatrixListener;
 import org.biojava.bio.structure.align.model.AFPChain;
@@ -60,12 +60,17 @@ public class CeSymm extends AbstractStructureAlignment implements
 	int rows;
 	int cols;
 	CECalculator calculator;
-	CeParameters params;
+	CECPParameters params;
 	// int loopCount ;
 	int maxNrAlternatives = 1;
 
 	private boolean refineResult = false;
 
+	public CeSymm() {
+		super();
+		params = new CECPParameters();
+		calculator = new CECalculator(params);
+	}
 	public static void main(String[] args) {
 
 		// used only for printing help...
@@ -145,7 +150,7 @@ public class CeSymm extends AbstractStructureAlignment implements
 			AtomCache cache, int fragmentLength) throws StructureException,
 			IOException {
 
-		params = new CeParameters();
+		params = new CECPParameters();
 
 		params.setWinSize(fragmentLength);
 
@@ -157,7 +162,7 @@ public class CeSymm extends AbstractStructureAlignment implements
 	}
 
 	private static Matrix align(AFPChain afpChain, Atom[] ca1, Atom[] ca2,
-			CeParameters params, Matrix origM, CECalculator calculator,
+			CECPParameters params, Matrix origM, CECalculator calculator,
 			int counter) throws StructureException {
 
 		int fragmentLength = params.getWinSize();
@@ -237,7 +242,7 @@ public class CeSymm extends AbstractStructureAlignment implements
 	public AFPChain align(Atom[] ca1, Atom[] ca2) throws StructureException {
 
 		if (params == null)
-			params = new CeParameters();
+			params = new CECPParameters();
 
 		return align(ca1, ca2, params);
 	}
@@ -245,11 +250,11 @@ public class CeSymm extends AbstractStructureAlignment implements
 	@Override
 	public AFPChain align(Atom[] ca1, Atom[] ca2O, Object param)
 			throws StructureException {
-		if (!(param instanceof CeParameters))
+		if (!(param instanceof CECPParameters))
 			throw new IllegalArgumentException(
-					"CE algorithm needs an object of call CeParameters as argument.");
+					"CE algorithm needs an object of call CECPParameters as argument.");
 
-		this.params = (CeParameters) param;
+		this.params = (CECPParameters) param;
 
 		this.ca1 = ca1;
 		this.ca2 = ca2O;
@@ -319,13 +324,13 @@ public class CeSymm extends AbstractStructureAlignment implements
 
 	@Override
 	public void setParameters(ConfigStrucAligParams parameters) {
-		if (!(parameters instanceof CeParameters)) {
+		if (!(parameters instanceof CECPParameters)) {
 			throw new IllegalArgumentException(
-					"Need to provide CeParameters, but provided "
+					"Need to provide CECPParameters, but provided "
 							+ parameters.getClass().getName());
 		}
 
-		params = (CeParameters) parameters;
+		params = (CECPParameters) parameters;
 	}
 
 	@Override
