@@ -32,6 +32,7 @@ import org.biojava.bio.structure.align.model.AFPChain;
  * @author dmyerstu
  *
  */
+@Deprecated
 public class AFPChainAndAtoms {
 
 	private final AFPChain afpChain;

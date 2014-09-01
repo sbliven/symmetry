@@ -26,228 +26,262 @@ package org.biojava3.structure.align.symm.protodomain;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.biojava.bio.structure.Structure;
 import org.biojava.bio.structure.StructureException;
 import org.biojava.bio.structure.align.util.AtomCache;
+import org.biojava3.test.framework.OutputTester;
 import org.biojava3.test.framework.ResourceList;
 import org.biojava3.test.framework.ResourceList.NameProvider;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * A unit test for {@link Protodomain}.
  * @author dmyerstu
  *
  */
+@RunWith(Enclosed.class)
 public class ProtodomainTest {
 
-	private AtomCache cache;
+	@RunWith(Parameterized.class)
+	public static class AlignSymmTest {
+		@Parameters(name="{0}") // Parameters for constructing this class. The first one is the test name
+		public static List<Object[]> data() {
+			return Arrays.asList(new Object[][] {
+					// Test name, expected Protodomain string, and source structure
+					{"Whole chain", "1hiv.A_1-44,A_58-88,A_93-95", "1hiv.A"},
+					{"Whole PDB file", "1hiv.A_1-99,B_1-99", "1hiv"}, 
+					{"Negative Start","2ags.A_5-20,A_27-57,A_62-87,A_94-114,A_129-139,A_151-165,A_172-294,A_299-373,A_379-391", "d2agsa2"},
+					{"Insertion Codes in SCOP domains","1qdm.A_3S-99S", "d1qdma1"}, // issue #3: has insertion codes in the SCOP range; USED TO BE 1qdm.A_3S-37S,A_65S-99S	
+					{"Heteroatoms at end","2j8g.A_5-94,A_102-132,A_137-140,A_145-156,A_164-182", "d2j8ga2"}, // issue #1: the domain has water atoms at the end of the chain; USED TO BE 2j8g.A_5-170,A_171-182
+					{"Domain insertion","1w0p.A_221-248,A_257-317,A_328-346,A_544-556,A_564-603,A_615-638,A_648-661,A_669-670,A_676-775", "d1w0pa3"}, // issue #2: there is a domain insertion between the start and end
+					{"Multi-chain domain","1cph.B_4-6,B_11-30,A_1-9", "d1cph.1"},
+					{"Long Gaps 1","3iek.A_17-28,A_56-82,A_87-128,A_133-134,A_150-166,A_173-239,A_244-265,A_273-294,A_320-352,A_369-377", "d3ieka_"},
+					{"Long Gaps 2","1uuq.A_40-52,A_58-87,A_96-133,A_143-148,A_171-193,A_199-223,A_230-294,A_301-364,A_369-384,A_395-398,A_412-428", "d1uuqa_"},
+					{"General 1","1u7g.A_13-64,A_77-82,A_101-187,A_194-334", "d1u7ga_"},
+					{"General 2","1w0p.A_221-248,A_257-317,A_328-346,A_544-556,A_564-603,A_615-638,A_648-661,A_669-670,A_676-775", "d1w0pa3"},
+					{"General 3","1zgk.A_326-381,A_387-609", "d1zgka1"},
+					{"General 4","2h6f.B_573-593,B_600-635,B_645-813,B_827-877", "d2h6fb1"},
+					{"General 5","1juh.A_8-87,A_92-145,A_150-154,A_204-349", "d1juha_"},
+					{"General 6","1erj.A_335-684,A_691-706", "d1erja_"},
+			});
+		}
 
-	@Before
-	public void setUp() throws Exception {
-		ResourceList.set(NameProvider.defaultNameProvider(), ResourceList.DEFAULT_PDB_DIR);
-		cache = ResourceList.get().getCache();
-	}
+		private String tag; // Prepend to all assert messages to distinguish parameterizations
+		private String structureName;
+		private String expectedDomain;
 
-	@Test
-	public void testConcat() throws Exception {
-		AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm("1ngk.B");
-		Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 2, cache);
-		
-	}
-	
-	@Test
-	public void testWholeChain() throws Exception {
-		checkAlignSymm("1hiv.A_1-44,A_58-88,A_93-95", "1hiv.A");
-	}
-
-	@Test
-	public void testWholePdbFile() throws Exception {
-		checkAlignSymm("1hiv.A_1-99,B_1-99", "1hiv");
-	}
-
-	@Test
-	public void testNegativeStart() throws Exception {
-		checkAlignSymm("2ags.A_5-20,A_27-57,A_62-87,A_94-114,A_129-139,A_151-165,A_172-294,A_299-373,A_379-391", "d2agsa2"); // issue #3: has insertion codes in the SCOP range; USED TO BE 1qdm.A_3S-37S,A_65S-99S	
-	}
-
-	@Test
-	public void testInsertionCodesInScopDomain() throws Exception {
-		checkAlignSymm("1qdm.A_3S-99S", "d1qdma1"); // issue #3: has insertion codes in the SCOP range; USED TO BE 1qdm.A_3S-37S,A_65S-99S	
-	}
-
-	@Test
-	public void testHeteroAtomsAtEnd() throws Exception {
-		checkAlignSymm("2j8g.A_5-94,A_102-132,A_137-140,A_145-156,A_164-182", "d2j8ga2"); // issue #1: the domain has water atoms at the end of the chain; USED TO BE 2j8g.A_5-170,A_171-182
-	}
-	
-	@Test
-	public void testDomainInsertion() throws Exception {
-		checkAlignSymm("1w0p.A_221-248,A_257-317,A_328-346,A_544-556,A_564-603,A_615-638,A_648-661,A_669-670,A_676-775", "d1w0pa3"); // issue #2: there is a domain insertion between the start and end
-	}
-
-	@Test
-	public void testMultiChainDomain() throws Exception {
-		checkAlignSymm("1cph.B_4-6,B_11-30,A_1-9", "d1cph.1");
-	}
-
-	@Test
-	public void testSplicing() throws Exception {
-		// with consecutive = 4, this is "3iek.A_17-28,A_56-82,A_87-128,A_133-134,A_150-166,A_173-239,A_244-265,A_273-294,A_320-352,A_369-377"
-		AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm("d3ieka_");
-		Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 1, cache);
-		Protodomain spliced5 = protodomain.spliceApproxConsecutive(5);
-		assertEquals("3iek.A_17-28,A_56-134,A_150-166,A_173-265,A_273-294,A_320-352,A_369-377", spliced5.toString());
-		Protodomain spliced10 = protodomain.spliceApproxConsecutive(10);
-		assertEquals("3iek.A_17-28,A_56-134,A_150-294,A_320-352,A_369-377", spliced10.toString());
-		Protodomain spliced20 = protodomain.spliceApproxConsecutive(20);
-		assertEquals("3iek.A_17-28,A_56-294,A_320-377", spliced20.toString());
-		Protodomain spliced100 = protodomain.spliceApproxConsecutive(100);
-		assertEquals("3iek.A_17-377", spliced100.toString());
-	}
-	
-	@Test
-	public void testSimilarityAlignment() throws Exception {
-		checkAlignSim("2bib.A_56-103", "1qdm.A_3S-37S,A_65S-99S", "d2biba2");
-	}
-
-	@Test
-	public void testSubstructure() throws Exception {
-		AFPChainAndAtoms storedAcaa = ResourceList.get().loadSim("1qdm.A_3S-37S,A_65S-99S", "d2biba2");
-		Protodomain protodomain = Protodomain.fromReferral(storedAcaa.getAfpChain(), storedAcaa.getCa2(), cache);
-		checkSubstruct("2bib.A_56-79", protodomain, 2, 0); // note that the protodomain is rounded down in all of these
-		checkSubstruct("2bib.A_56-71", protodomain, 3, 0);
-		checkSubstruct("2bib.A_56-67", protodomain, 4, 0);
-		checkSubstruct("2bib.A_56-65", protodomain, 5, 0);
-		checkSubstruct("2bib.A_56-63", protodomain, 6, 0);
-	}
-
-	@Test
-	public void testSubstructureWithIndex() throws Exception {
-		/*
-		 * Should be:
-		 * ngk.B_10-33,B_38-58,B_77-126
-		 * ngk.B_10-33,B_38-58,B_77-80
-		 * 1ngk.B_81-126
+		/**
+		 * 
+		 * @param description A short description of the current test, included in assert methods
+		 * @param expectedDomain A string description of the expected protodomain, eg "PDB.Chain_Range1,Chain_Range2"
+		 * @param structureName The name of the structure to load, typically a SCOP domain ID
 		 */
-		AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm("1ngk.B");
-		// order here shouldn't affect the ability to create a substructure, so just say 5
-		Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 5, cache);
-		checkSubstruct("1ngk.B_10-33,B_38-58,B_77-80", protodomain, 2, 0);
-		checkSubstruct("1ngk.B_81-126", protodomain, 2, 1);
-		// TODO check other orders
-	}
-	
-	@Test
-	public void testLongGaps() throws Exception {
-		checkAlignSymm("3iek.A_17-28,A_56-82,A_87-128,A_133-134,A_150-166,A_173-239,A_244-265,A_273-294,A_320-352,A_369-377", "d3ieka_");
-		checkAlignSymm("1uuq.A_40-52,A_58-87,A_96-133,A_143-148,A_171-193,A_199-223,A_230-294,A_301-364,A_369-384,A_395-398,A_412-428", "d1uuqa_");
-	}
-	
-	@Test
-	public void testAssorted() throws Exception {
-		checkAlignSymm("1u7g.A_13-64,A_77-82,A_101-187,A_194-334", "d1u7ga_");
-		checkAlignSymm("1w0p.A_221-248,A_257-317,A_328-346,A_544-556,A_564-603,A_615-638,A_648-661,A_669-670,A_676-775", "d1w0pa3");
-		checkAlignSymm("1zgk.A_326-381,A_387-609", "d1zgka1");
-		checkAlignSymm("2h6f.B_573-593,B_600-635,B_645-813,B_827-877", "d2h6fb1");
-		checkAlignSymm("1juh.A_8-87,A_92-145,A_150-154,A_204-349", "d1juha_");
-		checkAlignSymm("1erj.A_335-684,A_691-706", "d1erja_");
-	}
+		public AlignSymmTest(String description, String expectedDomain, String structureName) {
+			super();
+			this.structureName = structureName;
+			this.expectedDomain = expectedDomain;
 
-	@Test(expected=ProtodomainCreationException.class)
-	public void test1Block() throws ProtodomainCreationException {
-		AFPChainAndAtoms acaa = ResourceList.get().load(ResourceList.get().openFile("1_block_alignment.xml"), "d1qdma1", "d1qdma1");
-		Protodomain.fromSymmetryAlignment(acaa.getAfpChain(), acaa.getCa1(), 1, cache); // should throw an exception
-	}
+			if( tag != null) {
+				this.tag = "["+tag+"] "; // for messages
+			} else {
+				this.tag = "";
+			}
+		}
 
-	Protodomain checkSubstruct(String string, Protodomain parent, int order, int index) throws ProtodomainCreationException, IOException, StructureException {
-		Protodomain sub = parent.createSubstruct(order, index);
+		private AtomCache cache;
+		private OutputTester tester;
 
-		// check that the protodomain's string is correct
-		assertEquals("The protodomain created has the wrong string", string, sub.toString());
 
-		return sub;
-	}
+		@Before
+		public void setUp() throws Exception {
+			ResourceList.set(NameProvider.defaultNameProvider(), ResourceList.DEFAULT_PDB_DIR);
+			cache = ResourceList.get().getCache();
 
-	Protodomain checkAlignSim(String string, String name1, String name2) throws StructureException, IOException, ProtodomainCreationException {
+			//tester = OutputTester.getInstance();
+		}
 
-		// first we build the protodomain from a stored alignment
-		AFPChainAndAtoms storedAcaa = ResourceList.get().loadSim(name1, name2);
-		Protodomain protodomain = Protodomain.fromReferral(storedAcaa.getAfpChain(), storedAcaa.getCa2(), cache);
+		@Test
+		public void testAlignSymm() throws ProtodomainCreationException, IOException, StructureException {
+			checkAlignSymm(expectedDomain,structureName);
+		}
 
-		// first, check that the protodomain's string is correct
-		assertEquals("The protodomain created has the wrong string", string, protodomain.toString());
+		@Test
+		public void testLoading() {
+			
+		}
+		Protodomain checkAlignSymm(String string, String scopId) throws ProtodomainCreationException, IOException, StructureException {
 
-		// get the stored protodomain structure
-		Structure storedStructure = ResourceList.get().getStructure(string);
+			// first we build the protodomain from a stored alignment
+			AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm(scopId);
+			Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 1, cache);
 
-		// its size should be non-null (and correct)
-		//assertEquals("The number of amino acids is wrong", storedStructure.getChain(0).getAtomGroups().size(), (int) protodomain.getRangeLength());
+			System.out.println(protodomain.toString());
+			// first, check that the protodomain's string is correct
+			assertEquals("The protodomain created has the wrong string", string, protodomain.toString());
 
-		// now check that the protodomain's structure is the same as the stored structure
-		protodomain.buildStructure();
-		assertEquals("The protodomain's structure differs from the stored one", storedStructure.toString(), protodomain.getStructure().toString());
+			// get the stored protodomain structure
+			Structure storedStructure = ResourceList.get().getStructure(string);
 
-		// now we make a protodomain from the string (rather than the alignment)
-		Protodomain protodomainFromString = Protodomain.fromString(string, name2, cache);
+			// its size should be non-null (and correct)
+			//assertEquals("The number of amino acids is wrong", storedAcaa.getAfpChain().getOptLen()[0] + storedAcaa.getAfpChain().getOptLen()[1], (int) protodomain.getRangeLength());
 
-		// check its string and structure
-		assertEquals("The protodomain created from the string has the wrong string", string, protodomainFromString.toString());
-		protodomainFromString.buildStructure();
-		assertEquals("The structure's protodomain created from the string differs from the stored one", storedStructure.toString(), protodomainFromString.getStructure().toString());
+			// now check that the protodomain's structure is the same as the stored structure
+			protodomain.buildStructure();
+			assertEquals("The protodomain's structure differs from the stored one", protodomain.getStructure().toString(), storedStructure.toString());
 
-		// check the lengths are the same
-		assertEquals("The protodomain created from the string has a different length from the protodomain created from the AFPChain", protodomain.getLength(), protodomainFromString.getLength());
+			// now we make a protodomain from the string (rather than the alignment)
+			Protodomain protodomainFromString = Protodomain.fromString(string, scopId, cache);
 
-		// remove the structures (and check they're removed)
-		protodomainFromString.removeStructure();
-		assertEquals(protodomainFromString.getStructure(), null);
-		protodomain.removeStructure();
-		assertEquals(protodomain.getStructure(), null);
+			// check its string and structure
+			assertEquals("The protodomain created from the string has the wrong string", string, protodomainFromString.toString());
+			protodomainFromString.buildStructure();
+			assertEquals("The structure's protodomain created from the string differs from the stored one", storedStructure.toString(), protodomainFromString.getStructure().toString());
 
-		return protodomain;
+			// check the lengths are the same
+			assertEquals("The protodomain created from the string has a different length from the protodomain created from the AFPChain", protodomain.getLength(), protodomainFromString.getLength());
+
+			// remove the structures (and check they're removed)
+			protodomainFromString.removeStructure();
+			assertEquals(protodomainFromString.getStructure(), null);
+			protodomain.removeStructure();
+			assertEquals(protodomain.getStructure(), null);
+
+			return protodomain;
+		}
 	}
 
 
-	Protodomain checkAlignSymm(String string, String scopId) throws ProtodomainCreationException, IOException, StructureException {
+	public static class DepricatedTest {
+		private AtomCache cache;
+		private OutputTester tester;
 
-		// first we build the protodomain from a stored alignment
-		AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm(scopId);
-		Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 1, cache);
-				
-		System.out.println(protodomain.toString());
-		// first, check that the protodomain's string is correct
-		assertEquals("The protodomain created has the wrong string", string, protodomain.toString());
 
-		// get the stored protodomain structure
-		Structure storedStructure = ResourceList.get().getStructure(string);
+		@Before
+		public void setUp() throws Exception {
+			ResourceList.set(NameProvider.defaultNameProvider(), ResourceList.DEFAULT_PDB_DIR);
+			cache = ResourceList.get().getCache();
 
-		// its size should be non-null (and correct)
-		//assertEquals("The number of amino acids is wrong", storedAcaa.getAfpChain().getOptLen()[0] + storedAcaa.getAfpChain().getOptLen()[1], (int) protodomain.getRangeLength());
+			tester = OutputTester.getInstance();
+		}
 
-		// now check that the protodomain's structure is the same as the stored structure
-		protodomain.buildStructure();
-		assertEquals("The protodomain's structure differs from the stored one", protodomain.getStructure().toString(), storedStructure.toString());
+		@Test
+		public void testConcat() throws Exception {
+			AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm("1ngk.B");
+			Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 2, cache);
 
-		// now we make a protodomain from the string (rather than the alignment)
-		Protodomain protodomainFromString = Protodomain.fromString(string, scopId, cache);
+		}
 
-		// check its string and structure
-		assertEquals("The protodomain created from the string has the wrong string", string, protodomainFromString.toString());
-		protodomainFromString.buildStructure();
-		assertEquals("The structure's protodomain created from the string differs from the stored one", storedStructure.toString(), protodomainFromString.getStructure().toString());
+		@Test
+		public void testSplicing() throws Exception {
+			// with consecutive = 4, this is "3iek.A_17-28,A_56-82,A_87-128,A_133-134,A_150-166,A_173-239,A_244-265,A_273-294,A_320-352,A_369-377"
+			AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm("d3ieka_");
+			Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 1, cache);
+			Protodomain spliced5 = protodomain.spliceApproxConsecutive(5);
+			assertEquals("3iek.A_17-28,A_56-134,A_150-166,A_173-265,A_273-294,A_320-352,A_369-377", spliced5.toString());
+			Protodomain spliced10 = protodomain.spliceApproxConsecutive(10);
+			assertEquals("3iek.A_17-28,A_56-134,A_150-294,A_320-352,A_369-377", spliced10.toString());
+			Protodomain spliced20 = protodomain.spliceApproxConsecutive(20);
+			assertEquals("3iek.A_17-28,A_56-294,A_320-377", spliced20.toString());
+			Protodomain spliced100 = protodomain.spliceApproxConsecutive(100);
+			assertEquals("3iek.A_17-377", spliced100.toString());
+		}
 
-		// check the lengths are the same
-		assertEquals("The protodomain created from the string has a different length from the protodomain created from the AFPChain", protodomain.getLength(), protodomainFromString.getLength());
+		@Test
+		public void testSimilarityAlignment() throws Exception {
+			checkAlignSim("2bib.A_56-103", "1qdm.A_3S-37S,A_65S-99S", "d2biba2");
+		}
 
-		// remove the structures (and check they're removed)
-		protodomainFromString.removeStructure();
-		assertEquals(protodomainFromString.getStructure(), null);
-		protodomain.removeStructure();
-		assertEquals(protodomain.getStructure(), null);
+		@Test
+		public void testSubstructure() throws Exception {
+			AFPChainAndAtoms storedAcaa = ResourceList.get().loadSim("1qdm.A_3S-37S,A_65S-99S", "d2biba2");
+			Protodomain protodomain = Protodomain.fromReferral(storedAcaa.getAfpChain(), storedAcaa.getCa2(), cache);
+			checkSubstruct("2bib.A_56-79", protodomain, 2, 0); // note that the protodomain is rounded down in all of these
+			checkSubstruct("2bib.A_56-71", protodomain, 3, 0);
+			checkSubstruct("2bib.A_56-67", protodomain, 4, 0);
+			checkSubstruct("2bib.A_56-65", protodomain, 5, 0);
+			checkSubstruct("2bib.A_56-63", protodomain, 6, 0);
+		}
 
-		return protodomain;
+		@Test
+		public void testSubstructureWithIndex() throws Exception {
+			/*
+			 * Should be:
+			 * ngk.B_10-33,B_38-58,B_77-126
+			 * ngk.B_10-33,B_38-58,B_77-80
+			 * 1ngk.B_81-126
+			 */
+			AFPChainAndAtoms storedAcaa = ResourceList.get().loadSymm("1ngk.B");
+			// order here shouldn't affect the ability to create a substructure, so just say 5
+			Protodomain protodomain = Protodomain.fromSymmetryAlignment(storedAcaa.getAfpChain(), storedAcaa.getCa1(), 5, cache);
+			checkSubstruct("1ngk.B_10-33,B_38-58,B_77-80", protodomain, 2, 0);
+			checkSubstruct("1ngk.B_81-126", protodomain, 2, 1);
+			// TODO check other orders
+		}
+
+
+		@Test(expected=ProtodomainCreationException.class)
+		public void test1Block() throws ProtodomainCreationException {
+			AFPChainAndAtoms acaa = ResourceList.get().load(ResourceList.get().openFile("1_block_alignment.xml"), "d1qdma1", "d1qdma1");
+			Protodomain.fromSymmetryAlignment(acaa.getAfpChain(), acaa.getCa1(), 1, cache); // should throw an exception
+		}
+
+		Protodomain checkSubstruct(String string, Protodomain parent, int order, int index) throws ProtodomainCreationException, IOException, StructureException {
+			Protodomain sub = parent.createSubstruct(order, index);
+
+			// check that the protodomain's string is correct
+			assertEquals("The protodomain created has the wrong string", string, sub.toString());
+
+			return sub;
+		}
+
+		Protodomain checkAlignSim(String string, String name1, String name2) throws StructureException, IOException, ProtodomainCreationException {
+
+			// first we build the protodomain from a stored alignment
+			AFPChainAndAtoms storedAcaa = ResourceList.get().loadSim(name1, name2);
+			Protodomain protodomain = Protodomain.fromReferral(storedAcaa.getAfpChain(), storedAcaa.getCa2(), cache);
+
+			// first, check that the protodomain's string is correct
+			assertEquals("The protodomain created has the wrong string", string, protodomain.toString());
+
+			// get the stored protodomain structure
+			Structure storedStructure = ResourceList.get().getStructure(string);
+
+			// its size should be non-null (and correct)
+			//assertEquals("The number of amino acids is wrong", storedStructure.getChain(0).getAtomGroups().size(), (int) protodomain.getRangeLength());
+
+			// now check that the protodomain's structure is the same as the stored structure
+			protodomain.buildStructure();
+			assertEquals("The protodomain's structure differs from the stored one", storedStructure.toString(), protodomain.getStructure().toString());
+
+			// now we make a protodomain from the string (rather than the alignment)
+			Protodomain protodomainFromString = Protodomain.fromString(string, name2, cache);
+
+			// check its string and structure
+			assertEquals("The protodomain created from the string has the wrong string", string, protodomainFromString.toString());
+			protodomainFromString.buildStructure();
+			assertEquals("The structure's protodomain created from the string differs from the stored one", storedStructure.toString(), protodomainFromString.getStructure().toString());
+
+			// check the lengths are the same
+			assertEquals("The protodomain created from the string has a different length from the protodomain created from the AFPChain", protodomain.getLength(), protodomainFromString.getLength());
+
+			// remove the structures (and check they're removed)
+			protodomainFromString.removeStructure();
+			assertEquals(protodomainFromString.getStructure(), null);
+			protodomain.removeStructure();
+			assertEquals(protodomain.getStructure(), null);
+
+			return protodomain;
+		}
+
+
 	}
 
 }

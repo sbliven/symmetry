@@ -1,10 +1,11 @@
 package org.biojava3.test.framework;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.biojava.bio.structure.align.util.AtomCache;
 import org.biojava.bio.structure.scop.BerkeleyScopInstallation;
 import org.biojava.bio.structure.scop.ScopDatabase;
 import org.biojava.bio.structure.scop.ScopFactory;
@@ -47,7 +48,25 @@ public class OutputTester {
 		if (expectedDir == null) {
 			throw new IllegalArgumentException("No expected directory");
 		}
-		this.expectedDir = expectedDir;
+		
+		try {
+			URL url = OutputTester.class.getResource(expectedDir);
+			if(url == null) {
+				throw new IllegalArgumentException("Expected dir not found ("+expectedDir+")");
+			}
+			
+			File expectedDirFile = new File(url.toURI());
+			if( !expectedDirFile.exists()) {
+				throw new IllegalArgumentException("Expected dir doesn't exist ("+expectedDir+")");
+			}
+			
+			this.expectedDir = expectedDirFile.getCanonicalPath();
+		} catch( URISyntaxException e) {
+			throw new IllegalArgumentException("Error finding expected directory ("+expectedDir+")",e);
+		} catch (IOException e) {
+			throw new IllegalArgumentException("Error finding expected directory ("+expectedDir+")",e);
+		}
+		
 		if (actualDir == null) {
 			File tmp = createTempDirectory("actual");
 			this.actualDir = tmp.getAbsolutePath();
@@ -73,10 +92,12 @@ public class OutputTester {
 		return instance;
 	}
 
-	public File getExpectedFile(String relPath) {
-		URL url = OutputTester.class.getResource(relPath);
-
-		return null;
+	public File getExpectedFile(String relPath) throws FileNotFoundException {
+		return new File(expectedDir,relPath);
+	}
+	
+	public File getActualFile(String relPath) {
+		return new File(actualDir,relPath);
 	}
 
 	/**
