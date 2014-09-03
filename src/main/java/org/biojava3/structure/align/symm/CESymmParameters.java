@@ -2,6 +2,7 @@ package org.biojava3.structure.align.symm;
 
 import java.util.List;
 
+import org.biojava.bio.structure.align.ce.CECPParameters;
 import org.biojava.bio.structure.align.ce.CeCPMain;
 import org.biojava.bio.structure.align.ce.CeParameters;
 
@@ -11,7 +12,7 @@ import org.biojava.bio.structure.align.ce.CeParameters;
  * @author Spencer Bliven
  *
  */
-public class CESymmParameters extends CeParameters {
+public class CESymmParameters extends CECPParameters {
 
 	private boolean refineResult;
 	private OrderDetectorMethod orderDetectorMethod;

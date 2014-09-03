@@ -2,35 +2,35 @@
 <ns2:CensusResults xmlns:ns2="http://source.rcsb.org">
     <data>
         <alignment>
-            <alignLength>153</alignLength>
-            <alignScore>114.24775</alignScore>
-            <block1Length>29</block1Length>
-            <block2Length>33</block2Length>
-            <coverage>42</coverage>
-            <gapLength>91</gapLength>
-            <identity>0.019607844</identity>
-            <rmsd>4.595799</rmsd>
-            <similarity>0.078431375</similarity>
-            <tmScore>0.24091585</tmScore>
-            <zScore>1.99</zScore>
+            <alignLength>165</alignLength>
+            <alignScore>232.9778</alignScore>
+            <block1Length>24</block1Length>
+            <block2Length>43</block2Length>
+            <coverage>45</coverage>
+            <gapLength>98</gapLength>
+            <identity>0.030303031</identity>
+            <rmsd>5.4528584</rmsd>
+            <similarity>0.07878788</similarity>
+            <tmScore>0.22460552</tmScore>
+            <zScore>1.64</zScore>
         </alignment>
         <axis>
-            <orthogonal>138.79875</orthogonal>
-            <screw>0.7654455</screw>
-            <theta>3.079014</theta>
-            <x>0.71869856</x>
-            <y>0.5946005</y>
-            <z>0.36044785</z>
+            <orthogonal>251.44295</orthogonal>
+            <screw>1.3736765</screw>
+            <theta>3.1351216</theta>
+            <x>-0.52123386</x>
+            <y>0.8529043</y>
+            <z>-0.029487124</z>
         </axis>
         <classification>b.6.1</classification>
         <description>Cupredoxins</description>
         <isSignificant>true</isSignificant>
-        <order>2</order>
-        <protodomain>1kcw.A_938-977,A_997-1026</protodomain>
+        <order>4</order>
+        <protodomain>1kcw.A_904-912,A_936-943,A_964-1008,A_1019-1026</protodomain>
         <rank>0</rank>
         <scopId>d1kcwa6</scopId>
         <sunId>23156</sunId>
     </data>
-    <meanSecondsTaken>2039.0</meanSecondsTaken>
-    <timestamp>2013-12-18 17:00:54</timestamp>
+    <meanSecondsTaken>1648.0</meanSecondsTaken>
+    <timestamp>2014-09-03 14:37:04</timestamp>
 </ns2:CensusResults>

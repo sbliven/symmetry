@@ -171,9 +171,9 @@ public class RotationOrderDetectorTest {
 		axis = new RotationAxis(alignment);
 
 		coefs = detector.fitHarmonicsFloating(ca1, axis);
-		expectedHarmonics = new double[] { 2.386711,
-				0.3044205, 0.2654955, 0.2251938, 0.2217246,
-				0.05211578, 0.2773498, 0.046725, 0.2101539
+		expectedHarmonics = new double[] { 2.366679013015843,
+				0.3193482859534293, 0.269333714179555, 0.23173514628285755, 0.22683425484995692,
+				0.05867574677375045, 0.27108803524720687, 0.05479899729977149, 0.2218018710680044
 		};
 
 		assertArrayEquals(name,expectedHarmonics,coefs,1e-4);
@@ -274,10 +274,9 @@ public class RotationOrderDetectorTest {
 
 		coefs = detector.trySingleHarmonicsFloatingByAmp(ca1, axis);
 		expectedHarmonics = new double[] {
-				0.086517, 0.01248985, 0.01258807, -0.001225424,
-				-0.1398931, 0.117046, -0.08244989, 0.1015177
+				0.09557174170270101, 0.008787223181015748, 0.01162835744518009, -0.0020224117414387264, 
+				-0.13940992848672834, 0.10491704811734609, -0.07861549769491497, 0.11139096427869842
 		};
-
 		assertArrayEquals(name,expectedHarmonics,coefs,1e-4);
 
 	}
@@ -360,8 +359,8 @@ public class RotationOrderDetectorTest {
 
 		coefs = detector.trySingleCuspByAmp(ca1, axis);
 		expectedHarmonics = new double[] {
-				0.08433796, 0.02381816, 0.02802065, 0.01412526,
-				-0.1208657, 0.0874411, -0.07040143, 0.08127973
+				0.09215688421043856, 0.01954699457484211, 0.024678702567020566, 0.015512762093906297,
+				-0.1207419292219559, 0.0775398445014336, -0.06753395575944238, 0.08965700567291392
 		};
 
 		assertArrayEquals(name,expectedHarmonics,coefs,1e-4);

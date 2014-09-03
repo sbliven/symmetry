@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:CensusResultList xmlns:ns2="http://source.rcsb.org">
     <entry id="d1kcwa6">
-        <alignedUnit>1kcw.A_938-977,A_997-1026</alignedUnit>
-        <alignment>129=75=136 66=121=67=122=68=123=69=124=70=125=71=126=72=127=73=128=74=135 133=76=137 134=77=11 105=52=85=51=84=50=83=49=82=48=81=47=80=46=79=13 111=55=112=56=113=57=114=58=115=59 54=107=54 53=106=53 65=120=64=119=63=118=62=117=61=116=60 78=12</alignment>
+        <alignedUnit>1kcw.A_904-912,A_936-943,A_964-1008,A_1019-1026</alignedUnit>
+        <alignment>129=83=8 128=82=7 131=85=10 130=84=9 133=87=12=91=13=92=14=93=15=94=16=95=17=96=18=97=19=98=20=99=21 132=86=11 134=88 46=102=46 47=103=47 44=100=22 45=101=45 51=107=51 50=106=50 49=105=49 48=104=48 76=112=76 77=113=77 78=114=78 115=79=4 72=108=72 73=109=73 74=110=74 75=111=75 127=81=6 116=80=5</alignment>
         <axis>
-            <angle>3.079014</angle>
-            <axis z="0.36044785" y="0.5946005" x="0.71869856"/>
-            <origin z="-30.551208" y="-39.646156" x="48.122738"/>
-            <orthogonal>138.79875</orthogonal>
-            <parallel>0.7654455</parallel>
+            <angle>3.1351216</angle>
+            <axis x="-0.52123386" y="0.8529043" z="-0.029487124"/>
+            <origin x="107.03326" y="65.63503" z="6.4791007"/>
+            <orthogonal>251.44295</orthogonal>
+            <parallel>1.3736765</parallel>
         </axis>
-        <group>C2</group>
+        <group>C4</group>
         <scores>
-            <alignLength>153</alignLength>
-            <gapLength>91</gapLength>
-            <identity>0.019607844</identity>
-            <rmsd>4.595799</rmsd>
-            <similarity>0.078431375</similarity>
-            <tmScore>0.24091585</tmScore>
-            <zScore>1.99</zScore>
+            <alignLength>165</alignLength>
+            <gapLength>98</gapLength>
+            <identity>0.030303031</identity>
+            <rmsd>5.4528584</rmsd>
+            <similarity>0.07878788</similarity>
+            <tmScore>0.22460552</tmScore>
+            <zScore>1.64</zScore>
         </scores>
     </entry>
-    <meanSecondsTaken>NaN</meanSecondsTaken>
-    <startingTime>2014-03-07 12:41:30</startingTime>
+    <meanSecondsTaken>1589.0</meanSecondsTaken>
+    <startingTime>2014-09-03 13:01:21</startingTime>
 </ns2:CensusResultList>
