@@ -11,6 +11,7 @@ import org.biojava.bio.structure.ChainImpl;
 import org.biojava.bio.structure.Group;
 import org.biojava.bio.structure.StructureException;
 import org.biojava.bio.structure.StructureTools;
+import org.biojava.bio.structure.align.ce.CeMain;
 import org.biojava.bio.structure.align.ce.CeParameters;
 import org.biojava.bio.structure.align.gui.StructureAlignmentDisplay;
 import org.biojava.bio.structure.align.gui.jmol.StructureAlignmentJmol;
@@ -23,7 +24,7 @@ import org.biojava.bio.structure.jama.Matrix;
  * @author Spencer Bliven
  *
  */
-public class CEMirrorSymm extends CeSymm {
+public class CEMirrorSymm extends CeMain {
 	static String algorithmName = "jCE-mirror-symmetry";
 	static String version = "0.1";
 	
@@ -74,7 +75,7 @@ public class CEMirrorSymm extends CeSymm {
 		} else {
 			ca2m = StructureTools.cloneCAArray(ca2);
 		}
-
+		
 		AFPChain afpChain = super.align(ca1, ca2m, param);
 		
 		// try to set name2, which was lost in the clone
@@ -250,12 +251,16 @@ public class CEMirrorSymm extends CeSymm {
 		//name = "d2okua1"; mirrorSeq = true; mirrorCoords = false;
 		name = "2cb2.A";mirrorSeq = true; mirrorCoords = false;
 		//name = "d1in0a2"; mirrorSeq = true; mirrorCoords = true; //mirror topology, but poor rmsd
+		name = "d1ycsa_";mirrorSeq = true; mirrorCoords = false;
+		
+		String name2 = name;
+		name2 = "d1mq8a1";
 		try {
 			
 			AtomCache cache = new AtomCache();
 			
 			Atom[] ca1 = cache.getAtoms(name);
-			Atom[] ca2 = cache.getAtoms(name);
+			Atom[] ca2 = cache.getAtoms(name2);
 					
 
 //			PDBFileReader pdbreader = new PDBFileReader();
@@ -278,7 +283,7 @@ public class CEMirrorSymm extends CeSymm {
 			
 			AFPChain afpChain = ce.align(ca1, ca2);
 			afpChain.setName1(name);
-			afpChain.setName2(name+(mirrorSeq?" reversed":"")+(mirrorCoords?" mirrored":""));
+			afpChain.setName2(name2+(mirrorSeq?" reversed":"")+(mirrorCoords?" mirrored":""));
 			
 			StructureAlignmentJmol jmol = StructureAlignmentDisplay.display(afpChain, ca1, ca2);
 			RotationAxis axis = new RotationAxis(afpChain);
